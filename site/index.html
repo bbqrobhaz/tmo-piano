@@ -1,0 +1,9 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TMO Piano</title>
+<style>body{margin:0;background:#0b1426;color:#E9E5DA;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;line-height:1.5}main{max-width:640px;margin:0 auto;padding:28px 16px}h1{font-family:Georgia,serif;font-weight:500;color:#F6F1E4}a{color:#E9CF7A}button{min-height:48px;padding:10px 18px;border-radius:10px;border:1px solid #D4AF37;background:#D4AF37;color:#15110a;font-size:16px;font-weight:600;cursor:pointer}#s{color:#7FD6CB;margin-top:10px}</style></head>
+<body><main><h1>TMO Piano</h1><p>The sampled grand piano behind The Maestro Online’s widgets.</p>
+<p><button id="b">Play a test chord</button></p><p id="s"></p>
+<p>Samples: Salamander Grand Piano V3 by Alexander Holm, licensed under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>. Code: @tonejs/piano and Tone.js (MIT) by Yotam Mann. See CREDITS.md.</p></main>
+<script type="module">
+let p=null;document.getElementById('b').onclick=async()=>{const s=document.getElementById('s');if(!p){s.textContent='Loading…';const {Piano}=await import('./piano/tmo-piano.js');p=new Piano({velocities:4,release:false,pedal:true,url:new URL('./audio/',location.href).href});p.toDestination();try{await p.context.resume()}catch(e){}await p.load();}
+const t=p.context.currentTime+0.1;['C4','E4','G4','C5'].forEach((n,i)=>{p.keyDown({note:n,velocity:0.6,time:t+i*0.12});p.keyUp({note:n,time:t+2.5});});s.textContent='Playing.';};
+</script></body></html>
